@@ -7,6 +7,7 @@
 #include <chrono>
 #include "SocketReceive.hpp"
 #include "SocketSend.hpp"
+#include "ServerInput.hpp"
 
 class ServerManager {
 
@@ -16,19 +17,20 @@ public:
     static void Release();
 
     void Run();
+    void InputHandler();
     void RecvHandler();
     void SendHandler();
 
 private:
-    
+
     static ServerManager* sInstance;
 
     bool mQuit;
     std::vector<std::pair<std::string, int>> mList;
-
-    //TODO socket and interface
+    
     SocketReceive* mRecv;
     SocketSend* mSend;
+    ServerInput* mInput;
 
     ServerManager(const std::vector<std::pair<std::string, int>>& list);
     ~ServerManager();

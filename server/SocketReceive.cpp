@@ -34,12 +34,6 @@ void SocketReceive::Init(const std::string& ipaddr, const int& port) {
             return;
         }
         
-        int addrlen = sizeof(SocketEntity::Address());
-        if((mRecvSock = accept(SocketEntity::Sockfd(), (struct sockaddr *)SocketEntity::AddressRef(), (socklen_t *)&addrlen))<0) {
-            std::cout << "Accept Failed" << std::endl;
-            return;
-        }
-
         mValid = true;
     }
 }
@@ -51,15 +45,18 @@ bool SocketReceive::Valid() {
 
 std::string SocketReceive::GetMessage() {
 
-    mValread = read(mRecvSock, buffer, 1024);
 
     if(mValread==0) {
 
-        close(mRecvSock);
+        if(mRecvSock!=-1)
+            close(mRecvSock);
         int addrlen = sizeof(SocketEntity::Address());
         mRecvSock = accept(SocketEntity::Sockfd(), (struct sockaddr *)SocketEntity::AddressRef(), (socklen_t *)&addrlen);
+        mValread = -1;
         return "-1";
     }
+
+    mValread = read(mRecvSock, buffer, 1024);
     std::string message = buffer;
     memset(buffer, 0, sizeof(buffer));
 
@@ -71,6 +68,7 @@ SocketReceive::SocketReceive() {
     memset(buffer, 0, sizeof(buffer));
     mValid = false;
     mValread = 0;
+    mRecvSock = -1;
 }
 
 SocketReceive::~SocketReceive() {
