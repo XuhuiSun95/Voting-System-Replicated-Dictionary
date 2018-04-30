@@ -1,14 +1,12 @@
 #ifndef SERVERMANAGER_HPP
 #define SERVERMANAGER_HPP
 
-#include <vector>
-#include <utility>
 #include <thread>
-#include <mutex>
 #include <chrono>
+#include "EventManager.hpp"
+#include "ServerInput.hpp"
 #include "SocketReceive.hpp"
 #include "SocketSend.hpp"
-#include "ServerInput.hpp"
 
 class ServerManager {
 
@@ -18,13 +16,6 @@ public:
     static void Release();
 
     void Run();
-    void InputHandler();
-    void RecvHandler();
-    void SendHandler();
-
-    void PrintDict();
-    void PrintLog();
-    void PrintTable();
 
 private:
 
@@ -33,18 +24,21 @@ private:
     bool mQuit;
     int mId;
     std::vector<std::pair<std::string, int>> mList;
-    std::vector<int> mDict;
-    std::vector<std::vector<int>> mTable;
-
-    std::mutex DictMtx;
-    std::mutex TableMtx;
     
+    EventManager* mEvent;
+    ServerInput* mInput;
     SocketReceive* mRecv;
     SocketSend* mSend;
-    ServerInput* mInput;
 
     ServerManager(const int& id, const std::vector<std::pair<std::string, int>>& list);
     ~ServerManager();
+
+    void InputHandler();
+    void RecvHandler();
+    void SendHandler();
+
+    void SockConn();
+    void SockDisc();
 };
 
 #endif

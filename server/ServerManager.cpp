@@ -29,6 +29,33 @@ void ServerManager::Run() {
     send.join();
 }
 
+ServerManager::ServerManager(const int& id, const std::vector<std::pair<std::string, int>>& list) {
+
+    mQuit = false;
+    mId = id;
+    mList = list;
+
+    mEvent = EventManager::Instance();
+    mInput = ServerInput::Instance();
+    mRecv = SocketReceive::Instance();
+    mSend = SocketSend::Instance();
+}
+
+ServerManager::~ServerManager() {
+
+    SocketSend::Release();
+    mSend = nullptr;
+
+    SocketReceive::Release();
+    mRecv = nullptr;
+
+    ServerInput::Release();
+    mInput = nullptr;
+
+    EventManager::Release();
+    mEvent = nullptr;
+}
+
 void ServerManager::InputHandler() {
 
     int opt;
@@ -38,28 +65,23 @@ void ServerManager::InputHandler() {
         opt = mInput->RequestHandler();
         switch(opt) {
             case 0: // start
-                mSend = SocketSend::Instance();
-                if(!mSend->Valid())
-                    mSend->Init(mList[1].first, mList[1].second);
+                ServerManager::SockConn();
                 break;
             case 1: // stop
-                if(mSend!=nullptr) {
-                    SocketSend::Release();
-                    mSend = nullptr;
-                }
+                ServerManager::SockDisc();
                 break;
             case 2: // Vote, A
                 break;
             case 3: // Vote, B
                 break;
             case 4: // printDict.
-                PrintDict();
+                mEvent->PrintDict();
                 break;
             case 5: // printLog
-                PrintLog();
+                mEvent->PrintLog();
                 break;
             case 6: // printTable
-                PrintTable();
+                mEvent->PrintTable();
                 break;
             default:
                 std::cout << "Unknow command" << std::endl;
@@ -91,54 +113,23 @@ void ServerManager::SendHandler() {
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
         if(mSend!=nullptr && mSend->Valid()) {
-            mSend->SendMessage("hello");
+            mSend->SendMessage("0 Vote,A");
             std::cout << "message sent!" << std::endl;
         }
     }
 }
 
-void ServerManager::PrintDict() {
+void ServerManager::SockConn() {
 
-    DictMtx.lock();
-    std::cout << "{A:" << mDict[0] << ",B:" << mDict[1] << "}" << std::endl;
-    DictMtx.unlock();
-}
-
-void ServerManager::PrintLog() {
-}
-
-void ServerManager::PrintTable() {
-
-    TableMtx.lock();
-    for(auto it=mTable.begin(); it!=mTable.end(); ++it) {
-        for(auto it2=it->begin(); it2!=it->end(); ++it2)
-            std::cout << *it2 << " ";
-        std::cout << std::endl;
-    }
-    TableMtx.unlock();
-}
-
-ServerManager::ServerManager(const int& id, const std::vector<std::pair<std::string, int>>& list) {
-    
-    mQuit = false;
-    mId = id;
-    mList = list;
-    mDict = {0,0};
-    mTable = {{0,0,0},{0,0,0},{0,0,0}};
-
-    mInput = ServerInput::Instance();
-    mRecv = SocketReceive::Instance(); 
     mSend = SocketSend::Instance();
+    if(!mSend->Valid())
+        mSend->Init(mList[1].first, mList[1].second);
 }
 
-ServerManager::~ServerManager() {
+void ServerManager::SockDisc() {
 
-    SocketSend::Release();
-    mSend = nullptr;
-
-    SocketReceive::Release();
-    mRecv = nullptr;
-
-    ServerInput::Release();
-    mInput = nullptr;
+    if(mSend!=nullptr) {
+        SocketSend::Release();
+        mSend = nullptr;
+    }
 }
