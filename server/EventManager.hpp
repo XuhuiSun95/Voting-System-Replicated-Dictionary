@@ -21,6 +21,9 @@ private:
     
     static EventManager* sInstance;
 
+    int mId;
+    int mSeq;
+
     Dictionary* mDict;
     Log* mLog;
     TimeTable* mTable;

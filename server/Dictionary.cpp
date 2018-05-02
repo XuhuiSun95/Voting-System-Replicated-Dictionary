@@ -16,6 +16,19 @@ void Dictionary::Release() {
     sInstance = nullptr;
 }
 
+void Dictionary::Update(const std::string& s) {
+
+    if(s.compare("Vote,A")==0) {
+        mtx.lock();
+        mA++;
+        mtx.unlock();
+    } else {
+        mtx.lock();
+        mB++;
+        mtx.unlock();
+    }
+}
+
 void Dictionary::Print() {
 
     mtx.lock();

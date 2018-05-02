@@ -9,9 +9,10 @@ class TimeTable {
 
 public:
 
-    static TimeTable* Instance(const int& id, const int& size);
+    static TimeTable* Instance(const int& size);
     static void Release();
 
+    void Update(const int& num, const int& column, const int& row);
     void Print();
 
 private:
@@ -19,11 +20,10 @@ private:
     static TimeTable* sInstance;
 
     std::mutex mtx;
-    int mId;
     int mSize;
     std::vector<std::vector<int>>* mTable;
 
-    TimeTable(const int& id, const int& size);
+    TimeTable(const int& size);
     ~TimeTable();
 };
 

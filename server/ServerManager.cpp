@@ -69,9 +69,11 @@ void ServerManager::InputHandler() {
             case 1: // stop
                 ServerManager::SockDisc();
                 break;
-            case 2: // Vote, A
+            case 2: // Vote,A
+                mEvent->Vote("Vote,A");
                 break;
-            case 3: // Vote, B
+            case 3: // Vote,B
+                mEvent->Vote("Vote,B");
                 break;
             case 4: // printDict.
                 mEvent->PrintDict();

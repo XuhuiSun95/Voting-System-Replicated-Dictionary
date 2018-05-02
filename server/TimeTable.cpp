@@ -2,10 +2,10 @@
 
 TimeTable* TimeTable::sInstance = nullptr;
 
-TimeTable* TimeTable::Instance(const int& id, const int& size) {
+TimeTable* TimeTable::Instance(const int& size) {
 
     if(sInstance==nullptr)
-        sInstance = new TimeTable(id, size);
+        sInstance = new TimeTable(size);
 
     return sInstance;
 }
@@ -14,6 +14,13 @@ void TimeTable::Release() {
 
     delete sInstance;
     sInstance = nullptr;
+}
+
+void TimeTable::Update(const int& num, const int& column, const int& row) {
+
+   mtx.lock();
+   (*mTable)[row][column] += num;
+   mtx.unlock();
 }
 
 void TimeTable::Print() {
@@ -27,9 +34,8 @@ void TimeTable::Print() {
     mtx.unlock();
 }
 
-TimeTable::TimeTable(const int& id, const int& size) {
+TimeTable::TimeTable(const int& size) {
 
-    mId = id;
     mSize = size;
     mTable = new std::vector<std::vector<int>>(size, std::vector<int>(size, 0));
 }

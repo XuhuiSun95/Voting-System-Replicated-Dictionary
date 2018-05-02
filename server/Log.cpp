@@ -2,10 +2,10 @@
 
 Log* Log::sInstance = nullptr;
 
-Log* Log::Instance(const int& id, const int& size) {
+Log* Log::Instance(const int& size) {
 
     if(sInstance==nullptr)
-        sInstance = new Log(id, size);
+        sInstance = new Log(size);
 
     return sInstance;
 }
@@ -16,9 +16,19 @@ void Log::Release() {
     sInstance = nullptr;
 }
 
+void Log::Update(const int& seq, const std::string& s, const int& id) {
+
+    std::string log = std::to_string(seq) + " " + s;
+
+    mtx.lock();
+    (*mLog)[id].push_back(log);
+    mtx.unlock();
+}
+
 void Log::Print() {
 
     std::cout << "{";
+    bool flag = true;
     mtx.lock();
 
     for(int i=0; i<mSize; i++) {
@@ -26,9 +36,14 @@ void Log::Print() {
 
             std::size_t vote = (*mLog)[i][j].find("Vote");
             if(vote!=std::string::npos) {
-                std::cout << "{" << (*mLog)[i][j].substr(vote) << "}";
-                if(i!=mSize-1&&j!=(*mLog)[mSize-1].size()-1)
-                    std::cout << ",";
+                if(flag) {
+                    std::cout << "{";
+                    flag = false;
+                }
+                else {
+                    std::cout << ",{";
+                }
+                std::cout << (*mLog)[i][j].substr(vote) << "}";
             }
         }
     }
@@ -37,9 +52,8 @@ void Log::Print() {
     std::cout << "}" << std::endl;
 }
 
-Log::Log(const int& id, const int& size) {
+Log::Log(const int& size) {
 
-    mId = id;
     mSize = size;
     mLog = new std::vector<std::vector<std::string>>(size, std::vector<std::string>());
 }

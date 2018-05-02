@@ -17,6 +17,10 @@ void EventManager::Release() {
 }
 
 void EventManager::Vote(const std::string& s) {
+
+    mDict->Update(s);
+    mLog->Update(mSeq++, s, mId);
+    mTable->Update(1, mId, mId);
 }
 
 void EventManager::PrintDict() {
@@ -31,14 +35,18 @@ void EventManager::PrintLog() {
 
 void EventManager::PrintTable() {
 
+    std::cout << "Server [" << mId << "] :" << std::endl;
     mTable->Print();
 }
 
 EventManager::EventManager(const int& id, const int& size) {
 
+    mId = id;
+    mSeq = 0;
+
     mDict = Dictionary::Instance();
-    mLog = Log::Instance(id, size);
-    mTable = TimeTable::Instance(id, size);
+    mLog = Log::Instance(size);
+    mTable = TimeTable::Instance(size);
 }
 
 EventManager::~EventManager() {
