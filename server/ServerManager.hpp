@@ -12,7 +12,7 @@ class ServerManager {
 
 public:
 
-    static ServerManager* Instance(const int& id, const std::vector<std::pair<std::string, int>>& list);
+    static ServerManager* Instance(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list);
     static void Release();
 
     void Run();
@@ -22,7 +22,6 @@ private:
     static ServerManager* sInstance;
 
     bool mQuit;
-    int mId;
     std::vector<std::pair<std::string, int>> mList;
     
     EventManager* mEvent;
@@ -30,7 +29,7 @@ private:
     SocketReceive* mRecv;
     SocketSend* mSend;
 
-    ServerManager(const int& id, const std::vector<std::pair<std::string, int>>& list);
+    ServerManager(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list);
     ~ServerManager();
 
     void InputHandler();

@@ -2,10 +2,10 @@
 
 Log* Log::sInstance = nullptr;
 
-Log* Log::Instance(const int& size) {
+Log* Log::Instance(const int& id, const int& size) {
 
     if(sInstance==nullptr)
-        sInstance = new Log(size);
+        sInstance = new Log(id, size);
 
     return sInstance;
 }
@@ -37,8 +37,9 @@ void Log::Print() {
     std::cout << "}" << std::endl;
 }
 
-Log::Log(const int& size) {
+Log::Log(const int& id, const int& size) {
 
+    mId = id;
     mSize = size;
     mLog = new std::vector<std::vector<std::string>>(size, std::vector<std::string>());
 }

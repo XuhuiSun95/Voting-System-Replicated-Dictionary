@@ -2,10 +2,10 @@
 
 TimeTable* TimeTable::sInstance = nullptr;
 
-TimeTable* TimeTable::Instance(const int& size) {
+TimeTable* TimeTable::Instance(const int& id, const int& size) {
 
     if(sInstance==nullptr)
-        sInstance = new TimeTable(size);
+        sInstance = new TimeTable(id, size);
 
     return sInstance;
 }
@@ -27,8 +27,9 @@ void TimeTable::Print() {
     mtx.unlock();
 }
 
-TimeTable::TimeTable(const int& size) {
+TimeTable::TimeTable(const int& id, const int& size) {
 
+    mId = id;
     mSize = size;
     mTable = new std::vector<std::vector<int>>(size, std::vector<int>(size, 0));
 }

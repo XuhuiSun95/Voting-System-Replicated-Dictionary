@@ -10,7 +10,7 @@ class Log {
 
 public:
 
-    static Log* Instance(const int& size);
+    static Log* Instance(const int& id, const int& size);
     static void Release();
 
     void Print();
@@ -20,10 +20,11 @@ private:
     static Log* sInstance;
 
     std::mutex mtx;
+    int mId;
     int mSize;
     std::vector<std::vector<std::string>>* mLog;
 
-    Log(const int& size);
+    Log(const int& id, const int& size);
     ~Log();
 };
 

@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::pair<std::string, int>> list;
 
     std::string s;
-    int id;
+    int id, size;
     std::string ipaddr;
     int port;
     int count = 0;
@@ -25,17 +25,19 @@ int main(int argc, char* argv[]) {
         if(count>3) {
             std::cerr << "Invalid configuration file!" << std::endl;
             std::cerr << "Conf format:" << std::endl;
-            std::cerr << "<Server ID>" << std::endl;
-            std::cerr << "<local address> <local port>" << std::endl;
-            std::cerr << "<send address> <send port>" << std::endl;
+            std::cerr << "<Server ID> <Number of Server>" << std::endl;
+            std::cerr << "<Local Address> <Local Port>" << std::endl;
+            std::cerr << "<Send address> <Send port>" << std::endl;
 
             ifs.close();
             return 1;
         }
 
         std::istringstream iss(s);
-        if(count==1)
+        if(count==1) {
             iss >> id;
+            iss >> size;
+        }
         else {
             iss >> ipaddr;
             iss >> port;
@@ -55,7 +57,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    ServerManager* server = ServerManager::Instance(id, list);
+    ServerManager* server = ServerManager::Instance(id, size, list);
 
     server->Run();
 

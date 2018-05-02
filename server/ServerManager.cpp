@@ -2,10 +2,10 @@
 
 ServerManager* ServerManager::sInstance = nullptr;
 
-ServerManager* ServerManager::Instance(const int& id, const std::vector<std::pair<std::string, int>>& list) {
+ServerManager* ServerManager::Instance(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list) {
 
     if(sInstance==nullptr)
-        sInstance = new ServerManager(id, list);
+        sInstance = new ServerManager(id, size, list);
 
     return sInstance;
 }
@@ -29,13 +29,12 @@ void ServerManager::Run() {
     send.join();
 }
 
-ServerManager::ServerManager(const int& id, const std::vector<std::pair<std::string, int>>& list) {
+ServerManager::ServerManager(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list) {
 
     mQuit = false;
-    mId = id;
     mList = list;
 
-    mEvent = EventManager::Instance();
+    mEvent = EventManager::Instance(id, size);
     mInput = ServerInput::Instance();
     mRecv = SocketReceive::Instance();
     mSend = SocketSend::Instance();

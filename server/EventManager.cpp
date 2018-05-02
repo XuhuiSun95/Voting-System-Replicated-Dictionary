@@ -2,10 +2,10 @@
 
 EventManager* EventManager::sInstance = nullptr;
 
-EventManager* EventManager::Instance() {
+EventManager* EventManager::Instance(const int& id, const int& size) {
 
     if(sInstance==nullptr)
-        sInstance = new EventManager();
+        sInstance = new EventManager(id, size);
     
     return sInstance;
 }
@@ -34,11 +34,11 @@ void EventManager::PrintTable() {
     mTable->Print();
 }
 
-EventManager::EventManager() {
+EventManager::EventManager(const int& id, const int& size) {
 
     mDict = Dictionary::Instance();
-    mLog = Log::Instance(3);
-    mTable = TimeTable::Instance(3);
+    mLog = Log::Instance(id, size);
+    mTable = TimeTable::Instance(id, size);
 }
 
 EventManager::~EventManager() {

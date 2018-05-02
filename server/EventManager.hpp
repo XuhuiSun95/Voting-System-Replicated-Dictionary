@@ -9,7 +9,7 @@ class EventManager {
 
 public:
 
-    static EventManager* Instance();
+    static EventManager* Instance(const int& id, const int& size);
     static void Release();
 
     void Vote(const std::string& s);
@@ -25,7 +25,7 @@ private:
     Log* mLog;
     TimeTable* mTable;
 
-    EventManager();
+    EventManager(const int& id, const int& size);
     ~EventManager();
 };
 
