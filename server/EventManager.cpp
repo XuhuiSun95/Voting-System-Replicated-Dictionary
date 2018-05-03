@@ -29,6 +29,7 @@ std::string EventManager::Message() {
 
     std::string msg;
     mtx.lock();
+    msg += "Send from site [" + std::to_string(mId) + "] ";
     msg += mTable->Message();
     msg += " ";
     msg += mLog->Message();
@@ -79,8 +80,8 @@ void EventManager::Update(const std::string& s) {
                 }
             }
 
-            //int collect = mTable->GrabageCollect(i);
-
+            int collect = mTable->GarbageCollect(i);
+            mLog->Clean(i, collect);
         }
     }
     mtx.unlock();

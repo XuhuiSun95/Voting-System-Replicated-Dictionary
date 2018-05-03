@@ -32,6 +32,7 @@ void ServerManager::Run() {
 ServerManager::ServerManager(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list) {
 
     mQuit = false;
+    mDebug = true;
     mList = list;
 
     mEvent = EventManager::Instance(id, size);
@@ -84,6 +85,9 @@ void ServerManager::InputHandler() {
             case 6: // printTable
                 mEvent->PrintTable();
                 break;
+            case 7: // Debug
+                mDebug = !mDebug;
+                break;
             default:
                 std::cout << "Unknow command" << std::endl;
         }
@@ -100,10 +104,13 @@ void ServerManager::RecvHandler() {
 
             msg = mRecv->GetMessage();
 
-            if(msg.compare("-1")==0)
-                std::cout << "Accept new connection" << std::endl;
+            if(msg.compare("-1")==0) {
+                if(mDebug)
+                    std::cout << "Accept new connection" << std::endl;
+            }
             else if(msg.compare("")!=0) {
-                std::cout << "Receive message: " << msg << std::endl;
+                if(mDebug)
+                    std::cout << "Receive message: " << msg << std::endl;
                 mEvent->Update(msg);
             }
         }
@@ -116,8 +123,9 @@ void ServerManager::SendHandler() {
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
         if(mSend!=nullptr && mSend->Valid()) {
+            if(mDebug)
+                std::cout << "message sent!" << std::endl;
             mSend->SendMessage(mEvent->Message());
-            std::cout << "message sent!" << std::endl;
         }
     }
 }

@@ -15,6 +15,7 @@ public:
     void Update(const int& seq, const std::string& s, const int& id);
     std::string Message();
     void Print();
+    void Clean(const int& id, const int& seq);
 
 private:
 

@@ -73,6 +73,16 @@ std::pair<int,int> TimeTable::FastForward(const int& target, const int& column, 
     return forward;
 }
 
+int TimeTable::GarbageCollect(const int& id) {
+
+    int seq = INT_MAX;
+
+    for(int i=0; i<mSize; i++)
+        seq = std::min(seq, (*mTable)[i][id]);
+
+    return seq;
+}
+
 TimeTable::TimeTable(const int& size) {
 
     mSize = size;

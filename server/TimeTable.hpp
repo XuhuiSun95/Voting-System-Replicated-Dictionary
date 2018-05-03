@@ -1,6 +1,7 @@
 #ifndef TIMETABLE_HPP
 #define TIMETABLE_HPP
 
+#include <climits>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,6 +19,7 @@ public:
     void Print();
     bool Check(const std::vector<int>& table);
     std::pair<int,int> FastForward(const int& target, const int& column, const int& row);
+    int GarbageCollect(const int& id);
 
 private:
 

@@ -22,6 +22,7 @@ private:
     static ServerManager* sInstance;
 
     bool mQuit;
+    bool mDebug;
     std::vector<std::pair<std::string, int>> mList;
     
     EventManager* mEvent;

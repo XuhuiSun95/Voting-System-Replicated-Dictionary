@@ -34,6 +34,8 @@ int ServerInput::RequestHandler() {
         return 5;
     else if(in.compare("printTable")==0)
         return 6;
+    else if(in.compare("debug")==0)
+        return 7;
     else 
         return -1;
 }

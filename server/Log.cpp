@@ -63,6 +63,17 @@ void Log::Print() {
     std::cout << "}" << std::endl;
 }
 
+void Log::Clean(const int& id, const int& seq) {
+
+    for(int i=(*mLog)[id].size()-1; i>=0; i--) {
+
+        size_t ws = (*mLog)[id][i].find(" ");
+        int curr = std::stoi((*mLog)[id][i].substr(0, ws));
+        if(curr<seq)
+            (*mLog)[id].erase((*mLog)[id].begin()+i);
+    }
+}
+
 Log::Log(const int& size) {
 
     mSize = size;
