@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <mutex>
 
 class Dictionary {
 
@@ -19,7 +18,6 @@ private:
 
     static Dictionary* sInstance;
     
-    std::mutex mtx;
     int mA;
     int mB;
 

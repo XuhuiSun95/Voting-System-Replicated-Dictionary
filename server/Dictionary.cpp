@@ -18,22 +18,15 @@ void Dictionary::Release() {
 
 void Dictionary::Update(const std::string& s) {
 
-    if(s.compare("Vote,A")==0) {
-        mtx.lock();
+    if(s.compare("Vote,A")==0)
         mA++;
-        mtx.unlock();
-    } else {
-        mtx.lock();
+    else
         mB++;
-        mtx.unlock();
-    }
 }
 
 void Dictionary::Print() {
 
-    mtx.lock();
     std::cout << "{A:" << mA << ",B:" << mB << "}" << std::endl;
-    mtx.unlock();
 }
 
 Dictionary::Dictionary() {

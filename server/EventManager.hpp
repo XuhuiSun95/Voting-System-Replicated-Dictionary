@@ -1,6 +1,8 @@
 #ifndef EVENTMANAGER_HPP
 #define EVENTMANAGER_HPP
 
+#include <cmath>
+#include <mutex>
 #include "Dictionary.hpp"
 #include "Log.hpp"
 #include "TimeTable.hpp"
@@ -13,6 +15,8 @@ public:
     static void Release();
 
     void Vote(const std::string& s);
+    std::string Message();
+    void Update(const std::string& s);
     void PrintDict();
     void PrintLog();
     void PrintTable();
@@ -23,6 +27,7 @@ private:
 
     int mId;
     int mSeq;
+    std::mutex mtx;
 
     Dictionary* mDict;
     Log* mLog;

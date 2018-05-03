@@ -18,20 +18,59 @@ void TimeTable::Release() {
 
 void TimeTable::Update(const int& num, const int& column, const int& row) {
 
-   mtx.lock();
    (*mTable)[row][column] += num;
-   mtx.unlock();
+}
+
+std::string TimeTable::Message() {
+
+    std::string msg = "TT ";
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<mSize; j++)
+
+            msg += std::to_string((*mTable)[i][j]) + " ";
+    }
+
+    msg += "EOT";
+
+    return msg;
 }
 
 void TimeTable::Print() {
 
-    mtx.lock();
     for(int i=0; i<mSize; i++) {
         for(int j=0; j<mSize; j++)
             std::cout << (*mTable)[i][j] << " ";
         std::cout << std::endl;
     }
-    mtx.unlock();
+}
+
+bool TimeTable::Check(const std::vector<int>& table) {
+
+    bool update = false;
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<mSize; j++) {
+            if((*mTable)[i][j]<table[i*mSize+j]) {
+                update = true;
+                (*mTable)[i][j] = table[i*mSize+j];
+            }
+        }
+    }
+
+    return update;
+}
+
+std::pair<int,int> TimeTable::FastForward(const int& target, const int& column, const int& row) {
+
+    std::pair<int,int> forward;
+
+    forward.first = (*mTable)[row][column];
+    if(forward.first<target)
+        (*mTable)[row][column] = target;
+    forward.second = (*mTable)[row][column];
+
+    return forward;
 }
 
 TimeTable::TimeTable(const int& size) {

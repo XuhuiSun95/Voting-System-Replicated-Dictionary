@@ -50,9 +50,9 @@ int main(int argc, char* argv[]) {
     if(count!=3) {
         std::cerr << "Unmatched input!" << std::endl; 
         std::cerr << "Conf format:" << std::endl;
-        std::cerr << "<Server ID>" << std::endl;
-        std::cerr << "<local address> <local port>" << std::endl;
-        std::cerr << "<send address> <send port>" << std::endl;
+        std::cerr << "<Server ID> <Number of Server>" << std::endl;
+        std::cerr << "<Local Address> <Local Port>" << std::endl;
+        std::cerr << "<Send address> <Send port>" << std::endl;
 
         return 1;
     }

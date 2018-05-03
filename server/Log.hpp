@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <mutex>
 
 class Log {
 
@@ -14,13 +13,13 @@ public:
     static void Release();
 
     void Update(const int& seq, const std::string& s, const int& id);
+    std::string Message();
     void Print();
 
 private:
 
     static Log* sInstance;
 
-    std::mutex mtx;
     int mSize;
     std::vector<std::vector<std::string>>* mLog;
 

@@ -20,16 +20,28 @@ void Log::Update(const int& seq, const std::string& s, const int& id) {
 
     std::string log = std::to_string(seq) + " " + s;
 
-    mtx.lock();
     (*mLog)[id].push_back(log);
-    mtx.unlock();
+}
+
+std::string Log::Message() {
+
+    std::string msg = "LOG";
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<(*mLog)[i].size(); j++)
+
+            msg += "|" + std::to_string(i) + " " + (*mLog)[i][j];
+    }
+
+    msg += "|EOL";
+
+    return msg;
 }
 
 void Log::Print() {
 
     std::cout << "{";
     bool flag = true;
-    mtx.lock();
 
     for(int i=0; i<mSize; i++) {
         for(int j=0; j<(*mLog)[i].size(); j++) {
@@ -48,7 +60,6 @@ void Log::Print() {
         }
     }
 
-    mtx.unlock();
     std::cout << "}" << std::endl;
 }
 

@@ -102,8 +102,10 @@ void ServerManager::RecvHandler() {
 
             if(msg.compare("-1")==0)
                 std::cout << "Accept new connection" << std::endl;
-            else
+            else if(msg.compare("")!=0) {
                 std::cout << "Receive message: " << msg << std::endl;
+                mEvent->Update(msg);
+            }
         }
     }
 }
@@ -114,7 +116,7 @@ void ServerManager::SendHandler() {
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
         if(mSend!=nullptr && mSend->Valid()) {
-            mSend->SendMessage("0 Vote,A");
+            mSend->SendMessage(mEvent->Message());
             std::cout << "message sent!" << std::endl;
         }
     }

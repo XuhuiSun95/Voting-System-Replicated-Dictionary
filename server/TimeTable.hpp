@@ -2,8 +2,9 @@
 #define TIMETABLE_HPP
 
 #include <iostream>
+#include <string>
 #include <vector>
-#include <mutex>
+#include <utility>
 
 class TimeTable {
 
@@ -13,13 +14,15 @@ public:
     static void Release();
 
     void Update(const int& num, const int& column, const int& row);
+    std::string Message();
     void Print();
+    bool Check(const std::vector<int>& table);
+    std::pair<int,int> FastForward(const int& target, const int& column, const int& row);
 
 private:
 
     static TimeTable* sInstance;
 
-    std::mutex mtx;
     int mSize;
     std::vector<std::vector<int>>* mTable;
 
