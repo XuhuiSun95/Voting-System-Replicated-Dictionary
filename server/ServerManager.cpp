@@ -32,19 +32,16 @@ void ServerManager::Run() {
 ServerManager::ServerManager(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list) {
 
     mQuit = false;
+    mConn = false;
     mDebug = true;
     mList = list;
 
     mEvent = EventManager::Instance(id, size);
     mInput = ServerInput::Instance();
     mRecv = SocketReceive::Instance();
-    mSend = SocketSend::Instance();
 }
 
 ServerManager::~ServerManager() {
-
-    SocketSend::Release();
-    mSend = nullptr;
 
     SocketReceive::Release();
     mRecv = nullptr;
@@ -65,10 +62,10 @@ void ServerManager::InputHandler() {
         opt = mInput->RequestHandler();
         switch(opt) {
             case 0: // start
-                ServerManager::SockConn();
+                mConn = true;
                 break;
             case 1: // stop
-                ServerManager::SockDisc();
+                mConn = false;
                 break;
             case 2: // Vote,A
                 mEvent->Vote("Vote,A");
@@ -90,25 +87,28 @@ void ServerManager::InputHandler() {
                 break;
             default:
                 std::cout << "Unknow command" << std::endl;
+                std::cout << "Valid command:" << std::endl;
+                std::cout << "start      -- start connection" << std::endl;
+                std::cout << "stop       -- close connection" << std::endl;
+                std::cout << "Vote,X     -- Vote, X is either A or B" << std::endl;
+                std::cout << "printDict. -- print dictionary" << std::endl;
+                std::cout << "printLog   -- print log" << std::endl;
+                std::cout << "printTable -- print time table" << std::endl;
+                std::cout << "debug      -- display debug message(send&recv msg)" << std::endl;
         }
+        std::cout << std::endl;
     }
 }
 
 void ServerManager::RecvHandler() {
 
-    std::string msg;
-
     while(true) {
 
         if(mRecv->Valid()){
 
-            msg = mRecv->GetMessage();
+            std::string msg = mRecv->GetMessage();
+            if(msg.compare("-1")!=0 && msg.compare("")!=0) {
 
-            if(msg.compare("-1")==0) {
-                if(mDebug)
-                    std::cout << "Accept new connection" << std::endl;
-            }
-            else if(msg.compare("")!=0) {
                 if(mDebug)
                     std::cout << "Receive message: " << msg << std::endl;
                 mEvent->Update(msg);
@@ -122,10 +122,17 @@ void ServerManager::SendHandler() {
     while(true) {
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
-        if(mSend!=nullptr && mSend->Valid()) {
-            if(mDebug)
-                std::cout << "message sent!" << std::endl;
-            mSend->SendMessage(mEvent->Message());
+        if(mConn) {
+
+            ServerManager::SockConn();
+
+            if(mSend->Valid()) {
+                if(mDebug)
+                    std::cout << "message sent!" << std::endl;
+                mSend->SendMessage(mEvent->Message());
+            }
+
+            ServerManager::SockDisc();
         }
     }
 }

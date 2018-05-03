@@ -45,7 +45,6 @@ bool SocketReceive::Valid() {
 
 std::string SocketReceive::GetMessage() {
 
-
     if(mValread==0) {
 
         if(mRecvSock!=-1)
