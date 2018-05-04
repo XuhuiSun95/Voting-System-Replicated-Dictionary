@@ -115,6 +115,7 @@ void EventManager::Record() {
     std::ofstream ofs;
     ofs.open(filename, std::ios::out | std::ios::trunc);
 
+    ofs << mSeq << "\n";
     ofs << mDict->Record();
     ofs << mLog->Record();
     ofs << mTable->Record();
@@ -130,6 +131,37 @@ EventManager::EventManager(const int& id, const int& size) {
     mDict = Dictionary::Instance();
     mLog = Log::Instance(size);
     mTable = TimeTable::Instance(size);
+
+    std::string filename = "record/state_" + std::to_string(mId);
+    std::ifstream ifs;
+    ifs.open(filename, std::ios::in);
+
+    if(ifs.good()) {
+        std::cout << "Load from previous state!" << std::endl;
+        std::string line;
+        std::getline(ifs, line);
+        mSeq = std::stoi(line);
+        std::getline(ifs, line);
+        size_t ws = line.find(" ");
+        mDict->Load(std::stoi(line.substr(0,ws)), std::stoi(line.substr(ws+1)));
+        for(int i=0; i<size; i++) {
+            std::getline(ifs, line);
+            int count = std::stoi(line);
+            for(int j=0; j<count; j++) {
+                std::getline(ifs, line);
+                mLog->Load(i, line);
+            }
+        }
+        std::getline(ifs, line);
+        int offset = 0;
+        std::vector<int> tt;
+        for(int i=0; i<size*size; i++) {
+            ws = line.find(" ", offset);
+            tt.push_back(std::stoi(line.substr(offset, ws-offset)));
+            offset = ws + 1;
+        }
+        mTable->Load(tt);
+    }
 }
 
 EventManager::~EventManager() {

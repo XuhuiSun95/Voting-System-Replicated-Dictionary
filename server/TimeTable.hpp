@@ -14,6 +14,7 @@ public:
     static TimeTable* Instance(const int& size);
     static void Release();
 
+    void Load(const std::vector<int>& table);
     void Update(const int& num, const int& column, const int& row);
     std::string Message();
     void Print();

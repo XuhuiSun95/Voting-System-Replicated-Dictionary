@@ -16,6 +16,12 @@ void Dictionary::Release() {
     sInstance = nullptr;
 }
 
+void Dictionary::Load(const int& a, const int& b) {
+
+    mA = a;
+    mB = b;
+}
+
 void Dictionary::Update(const std::string& s) {
 
     if(s.compare("Vote,A")==0)

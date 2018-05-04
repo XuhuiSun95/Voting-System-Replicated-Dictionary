@@ -16,6 +16,11 @@ void Log::Release() {
     sInstance = nullptr;
 }
 
+void Log::Load(const int& id, const std::string& s) {
+
+    (*mLog)[id].push_back(s);
+}
+
 void Log::Update(const int& seq, const std::string& s, const int& id) {
 
     std::string log = std::to_string(seq) + " " + s;
@@ -79,9 +84,10 @@ std::string Log::Record() {
     std::string record;
 
     for(int i=0; i<mSize; i++) {
-        for(int j=0; j<(*mLog)[i].size(); j++)
-            record += (*mLog)[i][j] + "|";
-        record += "\n";
+        record += std::to_string((*mLog)[i].size()) + "\n";
+        for(int j=0; j<(*mLog)[i].size(); j++) {
+            record += (*mLog)[i][j] + "\n";
+        }
     }
 
     return record;

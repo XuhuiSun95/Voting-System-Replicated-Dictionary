@@ -16,6 +16,14 @@ void TimeTable::Release() {
     sInstance = nullptr;
 }
 
+void TimeTable::Load(const std::vector<int>& table) {
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<mSize; j++)
+            (*mTable)[i][j] = table[i*mSize+j];
+    }
+}
+
 void TimeTable::Update(const int& num, const int& column, const int& row) {
 
    (*mTable)[row][column] += num;
@@ -90,8 +98,8 @@ std::string TimeTable::Record() {
     for(int i=0; i<mSize; i++) {
         for(int j=0; j<mSize; j++)
             record += std::to_string((*mTable)[i][j]) + " ";
-        record += "\n";
     }
+    record += "\n";
 
     return record;
 }

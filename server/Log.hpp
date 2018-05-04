@@ -12,6 +12,7 @@ public:
     static Log* Instance(const int& size);
     static void Release();
 
+    void Load(const int& id, const std::string& s);
     void Update(const int& seq, const std::string& s, const int& id);
     std::string Message();
     void Print();

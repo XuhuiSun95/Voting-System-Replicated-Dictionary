@@ -11,6 +11,7 @@ public:
     static Dictionary* Instance();
     static void Release();
 
+    void Load(const int& a, const int& b);
     void Update(const std::string& s);
     void Print();
     std::string Record();
