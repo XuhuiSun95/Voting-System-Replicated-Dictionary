@@ -20,6 +20,7 @@ public:
     bool Check(const std::vector<int>& table);
     std::pair<int,int> FastForward(const int& target, const int& column, const int& row);
     int GarbageCollect(const int& id);
+    std::string Record();
 
 private:
 

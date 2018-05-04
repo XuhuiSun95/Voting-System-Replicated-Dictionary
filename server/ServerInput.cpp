@@ -36,6 +36,8 @@ int ServerInput::RequestHandler() {
         return 6;
     else if(in.compare("debug")==0)
         return 7;
+    else if(in.compare("shutdown")==0)
+        return 8;
     else 
         return -1;
 }

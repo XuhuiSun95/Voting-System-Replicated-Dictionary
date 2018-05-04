@@ -83,6 +83,19 @@ int TimeTable::GarbageCollect(const int& id) {
     return seq;
 }
 
+std::string TimeTable::Record() {
+
+    std::string record;
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<mSize; j++)
+            record += std::to_string((*mTable)[i][j]) + " ";
+        record += "\n";
+    }
+
+    return record;
+}
+
 TimeTable::TimeTable(const int& size) {
 
     mSize = size;

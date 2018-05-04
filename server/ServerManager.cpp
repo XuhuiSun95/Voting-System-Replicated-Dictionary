@@ -27,6 +27,8 @@ void ServerManager::Run() {
     input.join();
     recv.join();
     send.join();
+
+    mEvent->Record();
 }
 
 ServerManager::ServerManager(const int& id, const int& size, const std::vector<std::pair<std::string, int>>& list) {
@@ -57,7 +59,7 @@ void ServerManager::InputHandler() {
 
     int opt;
 
-    while(true) {
+    while(!mQuit) {
 
         opt = mInput->RequestHandler();
         switch(opt) {
@@ -85,6 +87,9 @@ void ServerManager::InputHandler() {
             case 7: // Debug
                 mDebug = !mDebug;
                 break;
+            case 8: // shutdown
+                mQuit = true;
+                break;
             default:
                 std::cout << "Unknow command" << std::endl;
                 std::cout << "Valid command:" << std::endl;
@@ -95,6 +100,7 @@ void ServerManager::InputHandler() {
                 std::cout << "printLog   -- print log" << std::endl;
                 std::cout << "printTable -- print time table" << std::endl;
                 std::cout << "debug      -- display debug message(send&recv msg)" << std::endl;
+                std::cout << "shutdown   -- shut down server" << std::endl;
         }
         std::cout << std::endl;
     }
@@ -102,7 +108,7 @@ void ServerManager::InputHandler() {
 
 void ServerManager::RecvHandler() {
 
-    while(true) {
+    while(!mQuit) {
 
         if(mRecv->Valid()){
 
@@ -119,7 +125,7 @@ void ServerManager::RecvHandler() {
 
 void ServerManager::SendHandler() {
 
-    while(true) {
+    while(!mQuit) {
 
         std::this_thread::sleep_for(std::chrono::seconds(3));
         if(mConn) {

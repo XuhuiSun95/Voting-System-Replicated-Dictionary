@@ -13,6 +13,7 @@ public:
 
     void Update(const std::string& s);
     void Print();
+    std::string Record();
 
 private:
 

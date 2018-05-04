@@ -109,6 +109,19 @@ void EventManager::PrintTable() {
     mtx.unlock();
 }
 
+void EventManager::Record() {
+
+    std::string filename = "record/state_" + std::to_string(mId);
+    std::ofstream ofs;
+    ofs.open(filename, std::ios::out | std::ios::trunc);
+
+    ofs << mDict->Record();
+    ofs << mLog->Record();
+    ofs << mTable->Record();
+
+    ofs.close();
+}
+
 EventManager::EventManager(const int& id, const int& size) {
 
     mId = id;

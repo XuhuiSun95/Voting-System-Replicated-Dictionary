@@ -16,6 +16,7 @@ public:
     std::string Message();
     void Print();
     void Clean(const int& id, const int& seq);
+    std::string Record();
 
 private:
 

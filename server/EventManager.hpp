@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <mutex>
+#include <fstream>
 #include "Dictionary.hpp"
 #include "Log.hpp"
 #include "TimeTable.hpp"
@@ -20,6 +21,7 @@ public:
     void PrintDict();
     void PrintLog();
     void PrintTable();
+    void Record();
 
 private:
     

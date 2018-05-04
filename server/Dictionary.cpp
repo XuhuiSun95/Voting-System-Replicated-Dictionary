@@ -29,6 +29,11 @@ void Dictionary::Print() {
     std::cout << "{A:" << mA << ",B:" << mB << "}" << std::endl;
 }
 
+std::string Dictionary::Record() {
+
+    return std::to_string(mA) + " " + std::to_string(mB) + "\n";
+}
+
 Dictionary::Dictionary() {
 
     mA = 0;

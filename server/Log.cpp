@@ -74,6 +74,19 @@ void Log::Clean(const int& id, const int& seq) {
     }
 }
 
+std::string Log::Record() {
+
+    std::string record;
+
+    for(int i=0; i<mSize; i++) {
+        for(int j=0; j<(*mLog)[i].size(); j++)
+            record += (*mLog)[i][j] + "|";
+        record += "\n";
+    }
+
+    return record;
+}
+
 Log::Log(const int& size) {
 
     mSize = size;
