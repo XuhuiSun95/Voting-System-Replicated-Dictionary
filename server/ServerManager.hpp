@@ -40,6 +40,7 @@ private:
 
     void SockConn();
     void SockDisc();
+    void Shutdown();
 };
 
 #endif

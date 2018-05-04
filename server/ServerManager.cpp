@@ -88,7 +88,7 @@ void ServerManager::InputHandler() {
                 mDebug = !mDebug;
                 break;
             case 8: // shutdown
-                mQuit = true;
+                ServerManager::Shutdown();
                 break;
             default:
                 std::cout << "Unknow command" << std::endl;
@@ -156,4 +156,14 @@ void ServerManager::SockDisc() {
         SocketSend::Release();
         mSend = nullptr;
     }
+}
+
+void ServerManager::Shutdown() {
+
+    mQuit = true;
+
+    mSend = SocketSend::Instance();
+    mSend->Init(mList[0].first, mList[0].second);
+    mSend->SendMessage("");
+    ServerManager::SockDisc();
 }
